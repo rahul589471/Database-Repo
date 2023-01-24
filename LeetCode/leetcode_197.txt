@@ -1,0 +1,10 @@
+# LeetCode- 197. Rising Temperature
+# https://leetcode.com/problems/rising-temperature/description/
+
+
+select id
+from (select id, temperature,recordDate,
+lag(recordDate) over (order by recorddate) as prev_date,
+lag(temperature) over (order by recorddate) as prev_temp
+from Weather)
+where  prev_date= (recordDate-1) and temperature >prev_temp
