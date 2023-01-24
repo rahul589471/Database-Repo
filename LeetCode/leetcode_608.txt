@@ -1,0 +1,16 @@
+# 608. Tree Node
+# https://leetcode.com/problems/tree-node/description/
+
+select id,
+case when p_id is  null then 'Root'
+  when leaf =1 then 'Leaf'
+  else 'Inner' end as "type"
+from (
+select id,p_id,level l,
+connect_by_isleaf as leaf, SYS_CONNECT_BY_PATH(p_id, '/') "Path"
+ from Tree
+ start with p_id is null
+ CONNECT BY PRIOR id = p_id
+)
+
+
