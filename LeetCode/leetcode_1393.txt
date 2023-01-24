@@ -1,0 +1,12 @@
+# LeetCode- 1393. Capital Gain/Loss
+# https://leetcode.com/problems/capital-gainloss/description/
+
+
+
+select stock_name,sum(capital_gain_loss) as capital_gain_loss
+from (select stock_name,
+case when operation='Buy' then next_day_price-price end as capital_gain_loss from
+(
+select stock_name , operation,operation_day,price,
+ lead(price) over(partition by stock_name order by operation_day) as next_day_price
+ from stocks))where capital_gain_loss is not null  group by stock_name ;
